@@ -1,4 +1,7 @@
 #pragma once
+#include<stdio.h>
+
+
 typedef int Rank;
 template <typename T> struct ListNode {
 	T data;
@@ -17,11 +20,9 @@ private:
 	ListNode<T>* header;
 	ListNode<T>* trailer;
 protected:
-	void init();
-	int clear();
-	void merge();
-	T remove(ListNode<T>* p);
 	
+	int clear();
+	T remove(ListNode<T>* p);
 	ListNode<T>* insertAsFirst(T const & e);
 	ListNode<T>* first() { return header->succ; };
 	ListNode<T>* last() { return trailer->pred; };
@@ -29,10 +30,29 @@ protected:
 	int deduplicate();
 	
 public:
-	List() { init(); };
+	//List() = default;
+	void init();
+	List() ;
+	List(ListNode<T>* p, int n);
 	~List();
+	
 	ListNode<T>* find(T const &e, int n, ListNode<T>* p);
 	ListNode<T> * find(T const e) {
-		find(e, _size,trailer);
+		return find(e, _size, trailer);
 	};
+	ListNode<T>* insertA(ListNode<T>* p,T const &e);
+	ListNode<T>* insertB(ListNode<T>* p, T const &e);
+	ListNode<T>* Header() { return header; };
+	ListNode<T>* Trailer() { return trailer; };
+	int Size() { return _size; };
+	int InsertSort();
+	void PrintData();
+
 };
+
+//#include"_list.cpp"
+
+
+
+
+
