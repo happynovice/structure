@@ -46,6 +46,8 @@ public:
 	ListNode<T>* Trailer() { return trailer; };
 	int Size() { return _size; };
 	int InsertSort();
+	
+	int SelectSort();
 	void PrintData();
 
 };
