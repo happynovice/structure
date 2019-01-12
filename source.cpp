@@ -34,7 +34,8 @@ int main()
 	else {
 		printf("not found \n");
 	}
-	int ret=ListPoint.InsertSort();
+	//int ret=ListPoint.InsertSort();
+	int ret = ListPoint.SelectSort();
 	printf("ret :%d\n", ret);
 	ListPoint.PrintData();
 	
