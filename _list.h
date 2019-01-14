@@ -46,6 +46,7 @@ public:
 	ListNode<T>* Trailer() { return trailer; };
 	int Size() { return _size; };
 	int InsertSort();
+	int SelectSort();
 	void merge(ListNode<T> * &PtrL, ListNode<T> *PtrR, List<T> &L, int middle, int total);
 	int MergeSort(ListNode<T> * ptr, int position);
 	void mergesort();
@@ -244,6 +245,46 @@ int List<T>::InsertSort()
 		PtrBuff = ptr;
 		PtrBack = ptr;
 	}
+	return 0;
+}
+template<typename T>
+int List<T>::SelectSort()
+{
+	ListNode<T> * PtrSort = trailer;
+	ListNode<T> * PtrBack = header->succ;
+	ListNode<T> * PtrBuff = PtrBack;
+	ListNode<T> * PtrBack2 = PtrBack;
+	for (int i = _size; i > 0; i--)
+	{
+		int MaxValue = 0;
+		PtrBuff = header->succ;
+		PtrBack = PtrBuff;
+		for (int j = 0; j<i; j++)
+		{
+			if (PtrBuff->data > MaxValue)
+			{
+				MaxValue = PtrBuff->data;
+				PtrBack = PtrBuff;
+			}
+			PtrBuff = PtrBuff->succ;
+		}
+		PtrBack->pred->succ = PtrBack->succ;
+		PtrBack->succ->pred = PtrBack->pred;
+
+		PtrSort->pred->succ = PtrBack;
+		PtrBack->pred = PtrSort->pred;
+		PtrSort->pred = PtrBack;
+		PtrBack->succ = PtrSort;
+
+		PtrSort = trailer;
+		for (int k = 0; k <= _size - i; k++)
+		{
+			PtrSort = PtrSort->pred;
+		}
+
+
+	}
+
 	return 0;
 }
 template <typename T>
