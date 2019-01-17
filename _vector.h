@@ -1,5 +1,5 @@
 #pragma once
-
+#include"_vector.h"
 #include<iostream>
 namespace ISF {
 	typedef int rank;
@@ -18,12 +18,12 @@ namespace ISF {
 	};
 }
 typedef int rank;
-#define  DefaultCapaticy 3
+#define  DefaultCapaticy 5
 template <typename T> class Vector
 {
 protected:
 	T * data;
-	rank _size;
+	rank _size=0;
 	int _capacity;
 public:
 	Vector(int c = DefaultCapaticy, int s = 0, T v = 0)
@@ -34,7 +34,8 @@ public:
 		
 
 	}
-	int insert(T e, int position);
+public:
+	int insert(T const e, int position);
 	T remove(int position);
 	int size() { return _size; };
 	int capacity() { return _capacity; };
@@ -42,8 +43,9 @@ public:
 };
 
 template <typename T> 
-int Vector<T>::insert(T e, int position)
+int Vector<T>::insert(T const e, int position)
 {
+	
 	if (position > _size )
 	{
 		printf("Vector<T>::insert   position > _size \n");
@@ -55,6 +57,7 @@ int Vector<T>::insert(T e, int position)
 	}
 	data[position] = e;
 	_size++;
+	printf("position :%d  size() :%d  e:%c\n", position, size(),e);
 	return 0;
 }
 template <typename T>
@@ -69,12 +72,15 @@ void Vector<T>::PrintData()
 template<typename T>
 T Vector<T>::remove(int position)
 {
+	
 	T buff = data[position];
-	for (int i = position; i < _size-1; i++)
+	
+	for (int i = _size-1; i > position; i--)
 	{
-		data[position] = data[position+1];
+		data[i-1] = data[i];
 	}
 	_size--;
+	printf("remove position :%d  size() :%d  e:%c\n", position, size(), data[position]);
 	return buff;
 }
 
