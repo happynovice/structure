@@ -39,13 +39,14 @@ public:
 	T remove(int position);
 	int size() { return _size; };
 	int capacity() { return _capacity; };
+	int find(T tmp);
+	bool empty() { std::cout << "_size:" << _size<<"\n"; return !_size; };
 	void PrintData();
 };
 
 template <typename T> 
 int Vector<T>::insert(T const e, int position)
 {
-	
 	if (position > _size )
 	{
 		printf("Vector<T>::insert   position > _size \n");
@@ -57,7 +58,8 @@ int Vector<T>::insert(T const e, int position)
 	}
 	data[position] = e;
 	_size++;
-	printf("position :%d  size() :%d  e:%c\n", position, size(),e);
+	std::cout << "insert _size:"<< _size<<"\n";
+	//printf("position :%d  size() :%d  e:%c\n", position, size(),e);
 	return 0;
 }
 template <typename T>
@@ -66,6 +68,7 @@ void Vector<T>::PrintData()
 	for (int i = 0; i < _size; i++)
 	{
 		printf("data[%d]:%d \n",i,data[i]);
+		//std::cout <<i<<": "<< data[i] <<std::endl;
 	}
 }
 
@@ -80,7 +83,19 @@ T Vector<T>::remove(int position)
 		data[i-1] = data[i];
 	}
 	_size--;
-	printf("remove position :%d  size() :%d  e:%c\n", position, size(), data[position]);
+	//printf("remove position :%d  size() :%d  e:%c\n", position, size(), data[position]);
 	return buff;
+}
+template<typename T>
+int  Vector<T>::find( T tmp)
+{
+	for (int i = 0; i < _size; i++)
+	{
+		if (data[i]==tmp)
+		{
+			return i;
+		}
+	}
+	return -1;
 }
 
