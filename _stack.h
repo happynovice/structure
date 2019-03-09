@@ -124,3 +124,35 @@ struct Queen {
 		return !((*this) == temp);
 	}
 };
+
+void FineQueen(int N)
+{
+	Stack<Queen> queen;
+	Queen buff(0,0);
+	while (buff.x < N || buff.y < N)
+	{
+		if (buff.y>=N  )
+		{
+			buff=queen.pop();
+			buff.y++;
+		}
+		while (buff.y<N && (-1!=queen.find(buff)))
+		{
+			buff.y++;
+		}
+		if (buff.y<N)
+		{
+			queen.push(buff);
+			buff.x++;
+			buff.y = 0;
+		}
+	}
+	int queen_size=queen.size();
+	printf("queen_size:%d \n",queen_size);
+	for (int i = 0; i < queen_size; i++)
+	{
+		buff = queen.pop();
+		printf("i:%d,queen.x:%d,queen.y:%d\n",i, buff.x, buff.y);
+	}
+}
+
