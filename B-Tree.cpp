@@ -12,9 +12,37 @@ struct  BTreeNode {
     int *key = NULL;
     bool leaf=true;
 } ;
-void SplitChild(int i,)
+void SplitChild(int i, BTreeNode *node,BTreeNode *node)
 {
-
+    BTreeNode *NewChild = (BTreeNode *)malloc(sizeof(BTreeNode));
+    NewChild->key = (int *)malloc(sizeof(int)*NewChild->M - 1);
+    NewChild->Child = (BTreeNode * *)malloc(sizeof(BTreeNode **)*NewChild->M);
+    NewChild->leaf = node->leaf;
+    NewChild->CurrentNum = node->Child[i + 1]->M - 1;
+    int MinKeyNum = ceil(node->Child[i + 1]->M / 2) - 1;
+    for (int j = 0; j < MinKeyNum; j++)
+    {
+        NewChild->key[j] = node->Child[i + 1]->key[j + MinKeyNum];
+    }
+    if (node->Child[i + 1]->leaf == false)
+    {
+        for (int j = 0; j < MinKeyNum + 1; j++)
+        {
+            NewChild->Child[j] = node->Child[i + 1]->Child[j + MinKeyNum];
+        }
+    }
+    NewChild->CurrentNum = MinKeyNum;
+    for (int j = node->CurrentNum; j >= i + 2; j--)
+    {
+        node->Child[j + 1] = node->Child[j];
+    }
+    node->Child[i + 1] = NewChild;
+    for (int j = node->CurrentNum - 1; j >= i + 1; j--)
+    {
+        node->key[j + 1] = node->key[j];
+    }
+    node->key[i + 1] = NewChild->key[node->CurrentNum - 1];
+    node->CurrentNum = node->CurrentNum + 1;
 }
 void insertNonFULL(BTreeNode **node,int k)
 {
@@ -36,39 +64,14 @@ void insertNonFULL(BTreeNode **node,int k)
         }
         if (node[0]->Child[num + 1]->CurrentNum == node[0]->Child[num + 1]->M)
         {
-            BTreeNode *NewChild = (BTreeNode *)malloc(sizeof(BTreeNode));
-            NewChild->key = (int *)malloc(sizeof(int)*NewChild->M - 1);
-            NewChild->Child = (BTreeNode * *)malloc(sizeof(BTreeNode **)*NewChild->M);
-            NewChild->leaf = node[0]->leaf;
-            NewChild->CurrentNum = node[0]->Child[num + 1]->M - 1;
-            int MinKeyNum = ceil(node[0]->Child[num + 1]->M / 2) - 1;
-            for (int j = 0; j < MinKeyNum; j++)
+            SplitChild(num+1, node[0]);
+            if (node[0]->key[num + 1] < k)
             {
-                NewChild->key[j] = node[0]->Child[num + 1]->key[j+ MinKeyNum];
+                num++;
             }
-            if (node[0]->Child[num + 1]->leaf==false)
-            {
-                for (int j = 0; j < MinKeyNum + 1; j++)
-                {
-                    NewChild->Child[j] = node[0]->Child[num + 1]->Child[j + MinKeyNum];
-                }
-            }
-            NewChild->CurrentNum = MinKeyNum;
-            for (int j = node[0]->CurrentNum;j>= num+2;j--)
-            {
-                node[0]->Child[j + 1] = node[0]->Child[j];
-            }
-            node[0]->Child[num + 1] = NewChild;
-            for (int j = node[0]->CurrentNum - 1; j >= num + 1; j--)
-            {
-                node[0]->key[j + 1] = node[0]->key[j];
-            }
-            node[0]->key[num+1] = NewChild->key[node[0]->CurrentNum-1];
-            node[0]->CurrentNum = node[0]->CurrentNum + 1;
         }
         insertNonFULL(&(node[0]->Child[num + 1]),k);
     }
-    
 }
 void insert(BTreeNode **node, int k)
 {
@@ -80,6 +83,7 @@ void insert(BTreeNode **node, int k)
         NewChild->Child = (BTreeNode * *)malloc(sizeof(BTreeNode **)*NewChild->M);
         NewChild->leaf = false;
         NewChild->Child[0] = *node;
+        SplitChild(0,);
     }
     else
     {
